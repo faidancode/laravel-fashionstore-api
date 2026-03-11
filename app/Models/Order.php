@@ -57,4 +57,10 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function reviews()
+    {
+        // Order -> OrderItem -> Review
+        return $this->hasManyThrough(Review::class, OrderItem::class);
+    }
 }
