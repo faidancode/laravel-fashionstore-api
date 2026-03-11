@@ -1,0 +1,32 @@
+services:
+  # Database PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    container_name: laravel_fashionstore_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: laravel_fashionstore_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d laravel_fashionstore_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  # Aplikasi Go
+  app:
+    build: .
+    container_name: laravel_fashionstore_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DB_URL=postgres://user:password@postgres:5432/laravel_fashionstore_dev?sslmode=disable
+volumes:
+  postgres_data:
