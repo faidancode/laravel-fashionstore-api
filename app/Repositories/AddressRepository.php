@@ -30,10 +30,14 @@ class AddressRepository
             ->paginate($params['limit'] ?? 10, ['*'], 'page', ($params['offset'] / ($params['limit'] ?? 10)) + 1);
     }
 
-    public function getById(string $id, string $userId): ?Address
+    public function getByUserId(string $userId): ?Address
+    {
+        return Address::where('user_id', $userId);
+    }
+
+    public function getById(string $id): ?Address
     {
         return Address::where('id', $id)
-            ->where('user_id', $userId)
             ->first();
     }
 
@@ -53,10 +57,9 @@ class AddressRepository
         return $address;
     }
 
-    public function delete(string $id, string $userId): bool
+    public function delete(string $id): bool
     {
         return (bool) Address::where('id', $id)
-            ->where('user_id', $userId)
             ->delete(); // Ini otomatis melakukan Soft Delete jika trait digunakan
     }
 

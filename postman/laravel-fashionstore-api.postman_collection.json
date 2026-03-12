@@ -1,0 +1,144 @@
+{
+  "info": {
+    "_postman_id": "a4f6a1b4-3a41-4f0b-9c47-7a0cbb2d4d10",
+    "name": "Laravel Fashionstore API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "access_token", "value": "" },
+    { "key": "confirm_token", "value": "" },
+    { "key": "reset_token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user@example.com\",\n  \"name\": \"User Test\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\",\n  \"phone\": \"081234567890\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/auth/register",
+          "host": [ "{{base_url}}" ],
+          "path": [ "api", "v1", "auth", "register" ]
+        }
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/auth/login",
+          "host": [ "{{base_url}}" ],
+          "path": [ "api", "v1", "auth", "login" ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json && json.data && json.data.access_token) {",
+              "  pm.collectionVariables.set('access_token', json.data.access_token);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth - Confirm Email",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"{{confirm_token}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/auth/confirm-email",
+          "host": [ "{{base_url}}" ],
+          "path": [ "api", "v1", "auth", "confirm-email" ]
+        }
+      }
+    },
+    {
+      "name": "Auth - Forgot Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user@example.com\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/auth/forgot-password",
+          "host": [ "{{base_url}}" ],
+          "path": [ "api", "v1", "auth", "forgot-password" ]
+        }
+      }
+    },
+    {
+      "name": "Auth - Reset Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"{{reset_token}}\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/auth/reset-password",
+          "host": [ "{{base_url}}" ],
+          "path": [ "api", "v1", "auth", "reset-password" ]
+        }
+      }
+    },
+    {
+      "name": "Auth - Refresh Token",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{base_url}}/api/v1/auth/refresh",
+          "host": [ "{{base_url}}" ],
+          "path": [ "api", "v1", "auth", "refresh" ]
+        }
+      }
+    },
+    {
+      "name": "Auth - Logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{access_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/auth/logout",
+          "host": [ "{{base_url}}" ],
+          "path": [ "api", "v1", "auth", "logout" ]
+        }
+      }
+    }
+  ]
+}

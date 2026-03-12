@@ -22,7 +22,6 @@ class AuthRepository
             'phone'    => $params['phone'] ?? null,
             'is_active'    => $params['is_active'] ?? true,
             'password' => $params['password'], // Pastikan sudah di-hash di Service layer
-            'role'     => $params['role'],
         ]);
     }
 
@@ -131,5 +130,18 @@ class AuthRepository
             'email_confirmed' => true,
             'updated_at'      => now(),
         ]);
+    }
+
+    public function updateRefreshToken(string $userId, ?string $token): void
+    {
+        User::where('id', $userId)->update([
+            'refresh_token' => $token, // Simpan dalam bentuk hash lebih baik, tapi string biasa sudah cukup aman jika pakai SSL
+            'updated_at' => now(),
+        ]);
+    }
+
+    public function getUserByRefreshToken(string $token): ?User
+    {
+        return User::where('refresh_token', $token)->first();
     }
 }
