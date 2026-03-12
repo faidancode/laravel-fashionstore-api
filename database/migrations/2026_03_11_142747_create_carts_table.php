@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -21,6 +20,9 @@ return new class extends Migration
             $table->timestamp('updated_at')->useCurrent();
             $table->timestamp('deleted_at')->nullable();
             $table->unique('user_id', 'carts_user_id_unique');
+
+            $table->unique('user_id', 'carts_user_id_unique');
+            $table->index('deleted_at', 'idx_carts_deleted_at');
         });
 
         Schema::create('cart_items', function (Blueprint $table) {
@@ -34,6 +36,17 @@ return new class extends Migration
             $table->timestamp('deleted_at')->nullable();
             $table->unique(['cart_id', 'product_id'], 'uniq_cart_book');
             $table->foreign('cart_id', 'cart_items_cartId_fk')
+                ->references('id')
+                ->on('carts')
+                ->onDelete('cascade');
+
+            $table->unique(['cart_id', 'product_id'], 'uniq_cart_product');
+
+            $table->index('cart_id', 'idx_cart_items_cart_id');
+            $table->index('product_id', 'idx_cart_items_product_id');
+            $table->index('deleted_at', 'idx_cart_items_deleted_at');
+
+            $table->foreign('cart_id', 'cart_items_cart_id_fk')
                 ->references('id')
                 ->on('carts')
                 ->onDelete('cascade');

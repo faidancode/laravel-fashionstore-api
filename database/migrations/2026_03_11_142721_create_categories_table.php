@@ -24,6 +24,10 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->timestamp('deleted_at')->nullable();
+
+            $table->index('is_active'); // Berguna untuk filtering kategori yang aktif saja
+            $table->index('created_at'); // Berguna jika ada fitur "Urutkan berdasarkan terbaru"
+            $table->index('deleted_at'); // Penting jika menggunakan SoftDeletes agar query tetap cepat
         });
     }
 

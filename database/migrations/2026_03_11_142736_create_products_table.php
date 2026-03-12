@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -26,6 +25,20 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->timestamp('deleted_at')->nullable();
+
+            // Index untuk Foreign Key (Biasanya otomatis, tapi baik untuk ditegaskan)
+            $table->index('category_id', 'idx_products_category');
+
+            // Index untuk filter status dan performa pencarian
+            $table->index('is_active', 'idx_products_active');
+            $table->index('price', 'idx_products_price');
+
+            // Composite Index: Sangat berguna untuk query "produk aktif di kategori tertentu"
+            $table->index(['category_id', 'is_active'], 'idx_products_cat_active');
+
+            // Index untuk pengurutan dan Soft Deletes
+            $table->index('created_at', 'idx_products_created_at');
+            $table->index('deleted_at', 'idx_products_deleted_at');
         });
 
         Schema::table('products', function (Blueprint $table) {
