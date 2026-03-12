@@ -12,14 +12,16 @@ class AddressService
 {
     public function __construct(
         protected AddressRepository $addressRepo
-    ) {}
+    ) {
+    }
 
     /**
      * Mengambil semua alamat milik user tertentu.
      */
-    public function getUserAddresses(string $userId)
+    public function getUserAddresses(string $userId, array $params)
     {
-        return $this->addressRepo->getByUserId($userId);
+        // Pastikan memanggil method repository yang mendukung paginasi dan filter
+        return $this->addressRepo->getPaginatedByUserId($userId, $params);
     }
 
     /**

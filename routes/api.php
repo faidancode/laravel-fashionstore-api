@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
-    // --- DOMAIN: AUTHENTICATION ---
     Route::prefix('auth')->group(function () {
         // Rate Limit Ketat: Login & Register (5 request / menit)
         Route::middleware('throttle:5,1')->group(function () {
@@ -27,7 +26,6 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    // --- DOMAIN: ADDRESSES ---
     Route::middleware(['auth:api'])->prefix('addresses')->group(function () {
 
         // Read Access (Tanpa throttle ketat)

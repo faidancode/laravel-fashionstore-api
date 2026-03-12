@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\PasswordResetToken;
 use App\Models\EmailConfirmationToken;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class AuthRepository
 {
@@ -17,10 +18,11 @@ class AuthRepository
     public function create(array $params): User
     {
         return User::create([
-            'email'    => $params['email'],
-            'name'     => $params['name'],
-            'phone'    => $params['phone'] ?? null,
-            'is_active'    => $params['is_active'] ?? true,
+            'email' => $params['email'],
+            'name' => $params['name'],
+            'phone' => $params['phone'] ?? null,
+            'is_active' => $params['is_active'] ?? true,
+            'email_confirmed' => false,
             'password' => $params['password'], // Pastikan sudah di-hash di Service layer
         ]);
     }
@@ -37,7 +39,8 @@ class AuthRepository
 
     public function checkPhoneExists(?string $phone): bool
     {
-        if (!$phone) return false;
+        if (!$phone)
+            return false;
         return User::where('phone', $phone)->exists();
     }
 
@@ -55,7 +58,7 @@ class AuthRepository
         PasswordResetToken::updateOrInsert(
             ['user_id' => $params['user_id']],
             [
-                'token'      => $params['token'],
+                'token' => $params['token'],
                 'expires_at' => $params['expires_at'],
                 'created_at' => $params['created_at'],
             ]
@@ -96,8 +99,9 @@ class AuthRepository
         EmailConfirmationToken::updateOrInsert(
             ['user_id' => $params['user_id']],
             [
-                'token'      => $params['token'],
-                'pin'        => $params['pin'],
+                'id' => (string) Str::uuid(),
+                'token' => $params['token'],
+                'pin' => $params['pin'],
                 'expires_at' => $params['expires_at'],
                 'created_at' => $params['created_at'],
             ]
@@ -128,7 +132,7 @@ class AuthRepository
     {
         User::where('id', $userId)->update([
             'email_confirmed' => true,
-            'updated_at'      => now(),
+            'updated_at' => now(),
         ]);
     }
 

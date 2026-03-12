@@ -46,6 +46,7 @@ class AuthService
                 'phone' => $data->phone,
                 'password' => Hash::make($data->password),
                 'is_active' => true,
+                'email_confirmed' => false,
             ];
 
             $user = $this->authRepo->create($payload);

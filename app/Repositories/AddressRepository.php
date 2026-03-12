@@ -35,6 +35,20 @@ class AddressRepository
         return Address::where('user_id', $userId)->get();
     }
 
+    public function getPaginatedByUserId(string $userId, array $params)
+    {
+        $query = Address::where('user_id', $userId);
+
+        // Filter Search
+        if (!empty($params['search'])) {
+            $query->where('label', 'like', '%' . $params['search'] . '%');
+        }
+
+        // Sort & Pagination
+        return $query->orderBy($params['sort_by'], $params['sort_order'])
+            ->paginate($params['limit']);
+    }
+
     public function getById(string $id): ?Address
     {
         return Address::where('id', $id)

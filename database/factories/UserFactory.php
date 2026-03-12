@@ -32,6 +32,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'phone' => fake()->unique()->phoneNumber(),
             'is_active' => true,
+            'email_confirmed' => false,
         ];
     }
 
