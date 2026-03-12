@@ -30,9 +30,9 @@ class AddressRepository
             ->paginate($params['limit'] ?? 10, ['*'], 'page', ($params['offset'] / ($params['limit'] ?? 10)) + 1);
     }
 
-    public function getByUserId(string $userId): ?Address
+    public function getByUserId(string $userId): ?Collection
     {
-        return Address::where('user_id', $userId);
+        return Address::where('user_id', $userId)->get();
     }
 
     public function getById(string $id): ?Address

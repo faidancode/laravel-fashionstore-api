@@ -12,7 +12,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->foreignUuid('category_id')->constrained('categories');
             $table->string('name', 200);
             $table->string('slug', 200)->unique();
@@ -26,8 +26,11 @@ return new class extends Migration {
             $table->timestamp('updated_at')->useCurrent();
             $table->timestamp('deleted_at')->nullable();
 
-            // Index untuk Foreign Key (Biasanya otomatis, tapi baik untuk ditegaskan)
+        });
+
+        Schema::table('products', function (Blueprint $table) {
             $table->index('category_id', 'idx_products_category');
+            $table->index('slug', 'idx_products_slug');
 
             // Index untuk filter status dan performa pencarian
             $table->index('is_active', 'idx_products_active');
@@ -39,11 +42,6 @@ return new class extends Migration {
             // Index untuk pengurutan dan Soft Deletes
             $table->index('created_at', 'idx_products_created_at');
             $table->index('deleted_at', 'idx_products_deleted_at');
-        });
-
-        Schema::table('products', function (Blueprint $table) {
-            $table->index('category_id', 'idx_products_category');
-            $table->index('slug', 'idx_products_slug');
         });
     }
 

@@ -12,7 +12,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('reviews', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('product_id')->constrained('products')->cascadeOnDelete();
             $table->foreignUuid('order_id')->constrained('orders')->cascadeOnDelete();
@@ -39,7 +39,11 @@ return new class extends Migration {
         });
 
         // Check Constraint untuk Rating (1-5)
-        DB::statement('ALTER TABLE reviews ADD CONSTRAINT reviews_rating_check CHECK (rating >= 1 AND rating <= 5)');
+        if (DB::getDriverName() !== 'sqlite') {
+            Schema::table('reviews', function (Blueprint $table) {
+                DB::statement('ALTER TABLE reviews ADD CONSTRAINT reviews_rating_check CHECK (rating >= 1 AND rating <= 5)');
+            });
+        }
     }
 
     /**

@@ -12,10 +12,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::statement('CREATE EXTENSION IF NOT EXISTS "pgcrypto"');
-
         Schema::create('orders', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->string('order_number', 32)->unique();
             $table->uuid('user_id');
             $table->string('status', 16)->default('PENDING');
@@ -43,7 +41,7 @@ return new class extends Migration
         });
 
         Schema::create('order_items', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->uuid('order_id');
             $table->uuid('product_id');
             $table->string('name_snapshot', 200);

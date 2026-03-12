@@ -11,22 +11,20 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        DB::statement('CREATE EXTENSION IF NOT EXISTS "pgcrypto"');
 
         Schema::create('carts', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->uuid('user_id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->timestamp('deleted_at')->nullable();
             $table->unique('user_id', 'carts_user_id_unique');
 
-            $table->unique('user_id', 'carts_user_id_unique');
             $table->index('deleted_at', 'idx_carts_deleted_at');
         });
 
         Schema::create('cart_items', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->uuid('cart_id');
             $table->uuid('product_id');
             $table->integer('quantity');
