@@ -54,6 +54,28 @@ class CategoryRepository
             ->paginate($limit, ['*'], 'page', (int)($offset / $limit) + 1);
     }
 
+    /**
+     * Daftar kategori dengan pagination sederhana.
+     */
+    public function getPaginated(array $params): LengthAwarePaginator
+    {
+        $query = Category::query();
+
+        if (!empty($params['search'])) {
+            $search = $params['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        $sortBy = $params['sort_by'] ?? 'created_at';
+        $sortOrder = strtolower($params['sort_order'] ?? 'desc') === 'asc' ? 'asc' : 'desc';
+
+        return $query->orderBy($sortBy, $sortOrder)
+            ->paginate($params['limit'] ?? 10);
+    }
+
     public function getById(string $id): ?Category
     {
         return Category::find($id);

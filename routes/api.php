@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\v1\AddressController;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\BrandController;
+use App\Http\Controllers\Api\v1\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -53,6 +54,20 @@ Route::prefix('v1')->group(function () {
             Route::post('/', [BrandController::class, 'store']);
             Route::put('/{id}', [BrandController::class, 'update']);
             Route::delete('/{id}', [BrandController::class, 'destroy']);
+        });
+    });
+
+    Route::middleware(['auth:api'])->prefix('categories')->group(function () {
+
+        // Read Access (Tanpa throttle ketat)
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::get('/{id}', [CategoryController::class, 'show']);
+
+        // Write Access: Proteksi tambahan (10x per menit)
+        Route::middleware('throttle:10,1')->group(function () {
+            Route::post('/', [CategoryController::class, 'store']);
+            Route::put('/{id}', [CategoryController::class, 'update']);
+            Route::delete('/{id}', [CategoryController::class, 'destroy']);
         });
     });
 });
