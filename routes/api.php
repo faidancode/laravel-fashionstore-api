@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\v1\AddressController;
 use App\Http\Controllers\Api\v1\AuthController;
+use App\Http\Controllers\Api\v1\BrandController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -38,6 +39,20 @@ Route::prefix('v1')->group(function () {
             Route::put('/{id}', [AddressController::class, 'update']);
             Route::patch('/{id}/set-primary', [AddressController::class, 'setPrimary']);
             Route::delete('/{id}', [AddressController::class, 'destroy']);
+        });
+    });
+
+    Route::middleware(['auth:api'])->prefix('brands')->group(function () {
+
+        // Read Access (Tanpa throttle ketat)
+        Route::get('/', [BrandController::class, 'index']);
+        Route::get('/{id}', [BrandController::class, 'show']);
+
+        // Write Access: Proteksi tambahan (10x per menit)
+        Route::middleware('throttle:10,1')->group(function () {
+            Route::post('/', [BrandController::class, 'store']);
+            Route::put('/{id}', [BrandController::class, 'update']);
+            Route::delete('/{id}', [BrandController::class, 'destroy']);
         });
     });
 });

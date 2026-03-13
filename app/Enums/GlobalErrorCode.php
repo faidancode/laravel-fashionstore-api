@@ -7,8 +7,8 @@ enum GlobalErrorCode: string implements AppErrorInterface
 {
     case INTERNAL_ERROR = 'INTERNAL_ERROR';
     case UNAUTHORIZED = 'UNAUTHORIZED';
-    case INVALID_UUID = 'INVALID_ADDRESS_UUID';
-    case NOT_FOUND = 'ADDRESS_NOT_FOUND';
+    case INVALID_UUID = 'INVALID__UUID';
+    case NOT_FOUND = 'DATA_NOT_FOUND';
 
     public function code(): string
     {

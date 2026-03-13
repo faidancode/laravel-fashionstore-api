@@ -1,0 +1,29 @@
+<?php
+
+namespace App\DTOs\Brand;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreBrandRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:100',
+            'slug' => 'required|string|max:100',
+            'description' => 'nullable|string',
+            'image_url' => 'nullable|string',
+            'is_active' => 'boolean',
+        ];
+    }
+
+    public function toDto(): array
+    {
+        return $this->validated();
+    }
+}
