@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\v1\AddressController;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\BrandController;
+use App\Http\Controllers\Api\v1\CartController;
 use App\Http\Controllers\Api\v1\CategoryController;
 use App\Http\Controllers\Api\v1\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +70,22 @@ Route::prefix('v1')->group(function () {
             Route::post('/', [CategoryController::class, 'store']);
             Route::put('/{id}', [CategoryController::class, 'update']);
             Route::delete('/{id}', [CategoryController::class, 'destroy']);
+        });
+    });
+
+    Route::middleware(['auth:api'])->prefix('cart')->group(function () {
+
+        // Read Access
+        Route::get('/', [CartController::class, 'show']);
+
+        // Write Access: Proteksi tambahan (10x per menit)
+        Route::middleware('throttle:10,1')->group(function () {
+            Route::post('/items', [CartController::class, 'store']);
+            Route::put('/items/{productId}', [CartController::class, 'update']);
+            Route::patch('/items/{productId}/increment', [CartController::class, 'increment']);
+            Route::patch('/items/{productId}/decrement', [CartController::class, 'decrement']);
+            Route::delete('/items/{productId}', [CartController::class, 'destroy']);
+            Route::delete('/', [CartController::class, 'clear']);
         });
     });
 

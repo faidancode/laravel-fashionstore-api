@@ -485,20 +485,20 @@
                                   },
                                   {
                                       "name":  "Create Brand",
-                                      "event":  [{
-
-                                                    "listen":  "test",
-                                                    "script":  {
-                                                                   "type":  "text/javascript",
-                                                                   "exec":  [
-                                                                                "const json = pm.response.json();",
-                                                                                "if (json \u0026\u0026 json.ok \u0026\u0026 json.data \u0026\u0026 json.data.id) {",
-                                                                                "    pm.collectionVariables.set(\u0027brand_id\u0027, json.data.id);",
-                                                                                "}"
-                                                                            ]
-                                                               }
-                                                
-}],
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "type":  "text/javascript",
+                                                                       "exec":  [
+                                                                                    "const json = pm.response.json();",
+                                                                                    "if (json \u0026\u0026 json.ok \u0026\u0026 json.data \u0026\u0026 json.data.id) {",
+                                                                                    "    pm.collectionVariables.set(\u0027brand_id\u0027, json.data.id);",
+                                                                                    "}"
+                                                                                ]
+                                                                   }
+                                                    }
+                                                ],
                                       "request":  {
                                                       "method":  "POST",
                                                       "header":  [
@@ -676,20 +676,20 @@
                                   },
                                   {
                                       "name":  "Create Category",
-                                      "event":  [{
-
-                                                    "listen":  "test",
-                                                    "script":  {
-                                                                   "type":  "text/javascript",
-                                                                   "exec":  [
-                                                                                "const json = pm.response.json();",
-                                                                                "if (json \u0026\u0026 json.ok \u0026\u0026 json.data \u0026\u0026 json.data.id) {",
-                                                                                "    pm.collectionVariables.set(\u0027category_id\u0027, json.data.id);",
-                                                                                "}"
-                                                                            ]
-                                                               }
-                                                
-}],
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "type":  "text/javascript",
+                                                                       "exec":  [
+                                                                                    "const json = pm.response.json();",
+                                                                                    "if (json \u0026\u0026 json.ok \u0026\u0026 json.data \u0026\u0026 json.data.id) {",
+                                                                                    "    pm.collectionVariables.set(\u0027category_id\u0027, json.data.id);",
+                                                                                    "}"
+                                                                                ]
+                                                                   }
+                                                    }
+                                                ],
                                       "request":  {
                                                       "method":  "POST",
                                                       "header":  [
@@ -867,20 +867,20 @@
                                   },
                                   {
                                       "name":  "Create Product",
-                                      "event":  [{
-
-                                                    "listen":  "test",
-                                                    "script":  {
-                                                                   "type":  "text/javascript",
-                                                                   "exec":  [
-                                                                                "const json = pm.response.json();",
-                                                                                "if (json \u0026\u0026 json.ok \u0026\u0026 json.data \u0026\u0026 json.data.id) {",
-                                                                                "    pm.collectionVariables.set(\u0027product_id\u0027, json.data.id);",
-                                                                                "}"
-                                                                            ]
-                                                               }
-                                                
-}],
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "type":  "text/javascript",
+                                                                       "exec":  [
+                                                                                    "const json = pm.response.json();",
+                                                                                    "if (json \u0026\u0026 json.ok \u0026\u0026 json.data \u0026\u0026 json.data.id) {",
+                                                                                    "    pm.collectionVariables.set(\u0027product_id\u0027, json.data.id);",
+                                                                                    "}"
+                                                                                ]
+                                                                   }
+                                                    }
+                                                ],
                                       "request":  {
                                                       "method":  "POST",
                                                       "header":  [
@@ -1007,8 +1007,227 @@
                                                   }
                                   }
                               ]
+                 },
+                 {
+                     "name":  "Cart",
+                     "item":  [
+                                  {
+                                      "name":  "Get Cart Detail",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/cart",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "cart"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Add Cart Item",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"product_id\": \"{{product_id}}\",\n  \"quantity\": 1\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/cart/items",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "cart",
+                                                                               "items"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Update Cart Item",
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"quantity\": 3\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/cart/items/{{product_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "cart",
+                                                                               "items",
+                                                                               "{{product_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Increment Cart Item",
+                                      "request":  {
+                                                      "method":  "PATCH",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/cart/items/{{product_id}}/increment",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "cart",
+                                                                               "items",
+                                                                               "{{product_id}}",
+                                                                               "increment"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Decrement Cart Item",
+                                      "request":  {
+                                                      "method":  "PATCH",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/cart/items/{{product_id}}/decrement",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "cart",
+                                                                               "items",
+                                                                               "{{product_id}}",
+                                                                               "decrement"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Cart Item",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/cart/items/{{product_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "cart",
+                                                                               "items",
+                                                                               "{{product_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Clear Cart",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/cart",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "cart"
+                                                                           ]
+                                                              }
+                                                  }
+                                  }
+                              ]
                  }
              ]
 }
-
-
