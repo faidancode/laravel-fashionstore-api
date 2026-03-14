@@ -1,300 +1,1014 @@
 {
-    "info": {
-        "_postman_id": "a4f6a1b4-3a41-4f0b-9c47-7a0cbb2d4d10",
-        "name": "Laravel Fashionstore API",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    "variable": [
-        { "key": "base_url", "value": "http://localhost:8000" },
-        { "key": "access_token", "value": "" },
-        { "key": "confirm_token", "value": "" },
-        { "key": "reset_token", "value": "" },
-        { "key": "address_id", "value": "" }
-    ],
-    "item": [
-        {
-            "name": "Auth",
-            "item": [
-                {
-                    "name": "Auth - Register",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"user@example.com\",\n  \"name\": \"User Test\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\",\n  \"phone\": \"081234567890\"\n}"
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/auth/register",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "auth", "register"]
-                        }
-                    }
-                },
-                {
-                    "name": "Auth - Login",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/auth/login",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "auth", "login"]
-                        }
-                    },
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "type": "text/javascript",
-                                "exec": [
-                                    "const json = pm.response.json();",
-                                    "if (json && json.data && json.data.access_token) {",
-                                    "  pm.collectionVariables.set('access_token', json.data.access_token);",
-                                    "}"
-                                ]
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "Auth - Confirm Email",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"token\": \"{{confirm_token}}\"\n}"
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/auth/confirm-email",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "auth", "confirm-email"]
-                        }
-                    }
-                },
-                {
-                    "name": "Auth - Forgot Password",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"email\": \"user@example.com\"\n}"
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/auth/forgot-password",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "auth", "forgot-password"]
-                        }
-                    }
-                },
-                {
-                    "name": "Auth - Reset Password",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"token\": \"{{reset_token}}\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/auth/reset-password",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "auth", "reset-password"]
-                        }
-                    }
-                },
-                {
-                    "name": "Auth - Refresh Token",
-                    "request": {
-                        "method": "POST",
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/auth/refresh",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "auth", "refresh"]
-                        }
-                    }
-                },
-                {
-                    "name": "Auth - Logout",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{access_token}}"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/auth/logout",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "auth", "logout"]
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Address",
-            "item": [
-                {
-                    "name": "List Addresses",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{access_token}}"
-                            },
-                            { "key": "Accept", "value": "application/json" }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/addresses?limit=10&page=1&search=&sortBy=createdAt&sortOrder=desc",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "addresses"],
-                            "query": [
-                                { "key": "limit", "value": "10" },
-                                { "key": "page", "value": "1" },
-                                { "key": "search", "value": "" },
-                                { "key": "sortBy", "value": "createdAt" },
-                                { "key": "sortOrder", "value": "desc" }
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "Create Address",
-                    "event": [
-                        {
-                            "listen": "test",
-                            "script": {
-                                "exec": [
-                                    "const json = pm.response.json();",
-                                    "if (json && json.ok && json.data.id) {",
-                                    "    pm.collectionVariables.set('address_id', json.data.id);",
-                                    "}"
-                                ],
-                                "type": "text/javascript"
-                            }
-                        }
-                    ],
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{access_token}}"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            { "key": "Accept", "value": "application/json" }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"label\": \"Rumah Utama\",\n    \"recipientName\": \"John Doe\",\n    \"recipientPhone\": \"08123456789\",\n    \"street\": \"Jl. Merdeka No. 123\",\n    \"city\": \"Jakarta Selatan\",\n    \"isPrimary\": true\n}"
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/addresses",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "addresses"]
-                        }
-                    }
-                },
-                {
-                    "name": "Get Address Detail",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{access_token}}"
-                            },
-                            { "key": "Accept", "value": "application/json" }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/addresses/{{address_id}}",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "addresses", "{{address_id}}"]
-                        }
-                    }
-                },
-                {
-                    "name": "Update Address",
-                    "request": {
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{access_token}}"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            { "key": "Accept", "value": "application/json" }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"label\": \"Kantor Baru\",\n    \"recipientName\": \"John Doe Edit\",\n    \"isPrimary\": false\n}"
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/addresses/{{address_id}}",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "addresses", "{{address_id}}"]
-                        }
-                    }
-                },
-                {
-                    "name": "Delete Address",
-                    "request": {
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{access_token}}"
-                            },
-                            { "key": "Accept", "value": "application/json" }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/v1/addresses/{{address_id}}",
-                            "host": ["{{base_url}}"],
-                            "path": ["api", "v1", "addresses", "{{address_id}}"]
-                        }
-                    }
-                }
-            ]
-        }
-    ]
+    "info":  {
+                 "_postman_id":  "a4f6a1b4-3a41-4f0b-9c47-7a0cbb2d4d10",
+                 "name":  "Laravel Fashionstore API",
+                 "schema":  "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+             },
+    "variable":  [
+                     {
+                         "key":  "base_url",
+                         "value":  "http://localhost:8000"
+                     },
+                     {
+                         "key":  "access_token",
+                         "value":  ""
+                     },
+                     {
+                         "key":  "confirm_token",
+                         "value":  ""
+                     },
+                     {
+                         "key":  "reset_token",
+                         "value":  ""
+                     },
+                     {
+                         "key":  "address_id",
+                         "value":  ""
+                     },
+                     {
+                         "key":  "brand_id",
+                         "value":  ""
+                     },
+                     {
+                         "key":  "category_id",
+                         "value":  ""
+                     },
+                     {
+                         "key":  "product_id",
+                         "value":  ""
+                     }
+                 ],
+    "item":  [
+                 {
+                     "name":  "Auth",
+                     "item":  [
+                                  {
+                                      "name":  "Auth - Register",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"email\": \"user@example.com\",\n  \"name\": \"User Test\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\",\n  \"phone\": \"081234567890\"\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/auth/register",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "register"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Auth - Login",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/auth/login",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "login"
+                                                                           ]
+                                                              }
+                                                  },
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "type":  "text/javascript",
+                                                                       "exec":  [
+                                                                                    "const json = pm.response.json();",
+                                                                                    "if (json \u0026\u0026 json.data \u0026\u0026 json.data.access_token) {",
+                                                                                    "  pm.collectionVariables.set(\u0027access_token\u0027, json.data.access_token);",
+                                                                                    "}"
+                                                                                ]
+                                                                   }
+                                                    }
+                                                ]
+                                  },
+                                  {
+                                      "name":  "Auth - Confirm Email",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"token\": \"{{confirm_token}}\"\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/auth/confirm-email",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "confirm-email"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Auth - Forgot Password",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"email\": \"user@example.com\"\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/auth/forgot-password",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "forgot-password"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Auth - Reset Password",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"token\": \"{{reset_token}}\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/auth/reset-password",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "reset-password"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Auth - Refresh Token",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/auth/refresh",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "refresh"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Auth - Logout",
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/auth/logout",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "auth",
+                                                                               "logout"
+                                                                           ]
+                                                              }
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "Address",
+                     "item":  [
+                                  {
+                                      "name":  "List Addresses",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/addresses?limit=10\u0026page=1\u0026search=\u0026sortBy=createdAt\u0026sortOrder=desc",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "addresses"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "limit",
+                                                                                    "value":  "10"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "page",
+                                                                                    "value":  "1"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "search",
+                                                                                    "value":  ""
+                                                                                },
+                                                                                {
+                                                                                    "key":  "sortBy",
+                                                                                    "value":  "createdAt"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "sortOrder",
+                                                                                    "value":  "desc"
+                                                                                }
+                                                                            ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Address",
+                                      "event":  [
+                                                    {
+                                                        "listen":  "test",
+                                                        "script":  {
+                                                                       "exec":  [
+                                                                                    "const json = pm.response.json();",
+                                                                                    "if (json \u0026\u0026 json.ok \u0026\u0026 json.data.id) {",
+                                                                                    "    pm.collectionVariables.set(\u0027address_id\u0027, json.data.id);",
+                                                                                    "}"
+                                                                                ],
+                                                                       "type":  "text/javascript"
+                                                                   }
+                                                    }
+                                                ],
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"label\": \"Rumah Utama\",\n    \"recipientName\": \"John Doe\",\n    \"recipientPhone\": \"08123456789\",\n    \"street\": \"Jl. Merdeka No. 123\",\n    \"city\": \"Jakarta Selatan\",\n    \"isPrimary\": true\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/addresses",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "addresses"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Address Detail",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/addresses/{{address_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "addresses",
+                                                                               "{{address_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Update Address",
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n    \"label\": \"Kantor Baru\",\n    \"recipientName\": \"John Doe Edit\",\n    \"isPrimary\": false\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/addresses/{{address_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "addresses",
+                                                                               "{{address_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Address",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/addresses/{{address_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "addresses",
+                                                                               "{{address_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "Brand",
+                     "item":  [
+                                  {
+                                      "name":  "List Brands",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/brands?limit=10\u0026search=\u0026sort_by=created_at\u0026sort_order=desc",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "brands"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "limit",
+                                                                                    "value":  "10"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "search",
+                                                                                    "value":  ""
+                                                                                },
+                                                                                {
+                                                                                    "key":  "sort_by",
+                                                                                    "value":  "created_at"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "sort_order",
+                                                                                    "value":  "desc"
+                                                                                }
+                                                                            ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Brand",
+                                      "event":  [{
+
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "text/javascript",
+                                                                   "exec":  [
+                                                                                "const json = pm.response.json();",
+                                                                                "if (json \u0026\u0026 json.ok \u0026\u0026 json.data \u0026\u0026 json.data.id) {",
+                                                                                "    pm.collectionVariables.set(\u0027brand_id\u0027, json.data.id);",
+                                                                                "}"
+                                                                            ]
+                                                               }
+                                                
+}],
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"name\": \"Brand Demo\",\n  \"slug\": \"brand-demo\",\n  \"description\": \"Brand description\",\n  \"image_url\": \"https://example.test/brand.png\",\n  \"is_active\": true\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/brands",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "brands"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Brand Detail",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/brands/{{brand_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "brands",
+                                                                               "{{brand_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Update Brand",
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"name\": \"Brand Updated\",\n  \"slug\": \"brand-updated\",\n  \"description\": \"Updated description\",\n  \"image_url\": \"https://example.test/brand-updated.png\",\n  \"is_active\": true\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/brands/{{brand_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "brands",
+                                                                               "{{brand_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Brand",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/brands/{{brand_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "brands",
+                                                                               "{{brand_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "Category",
+                     "item":  [
+                                  {
+                                      "name":  "List Categories",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/categories?limit=10\u0026search=\u0026sort_by=created_at\u0026sort_order=desc",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "categories"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "limit",
+                                                                                    "value":  "10"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "search",
+                                                                                    "value":  ""
+                                                                                },
+                                                                                {
+                                                                                    "key":  "sort_by",
+                                                                                    "value":  "created_at"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "sort_order",
+                                                                                    "value":  "desc"
+                                                                                }
+                                                                            ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Category",
+                                      "event":  [{
+
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "text/javascript",
+                                                                   "exec":  [
+                                                                                "const json = pm.response.json();",
+                                                                                "if (json \u0026\u0026 json.ok \u0026\u0026 json.data \u0026\u0026 json.data.id) {",
+                                                                                "    pm.collectionVariables.set(\u0027category_id\u0027, json.data.id);",
+                                                                                "}"
+                                                                            ]
+                                                               }
+                                                
+}],
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"name\": \"Category Demo\",\n  \"slug\": \"category-demo\",\n  \"description\": \"Category description\",\n  \"image_url\": \"https://example.test/category.png\",\n  \"is_active\": true\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/categories",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "categories"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Category Detail",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/categories/{{category_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "categories",
+                                                                               "{{category_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Update Category",
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"name\": \"Category Updated\",\n  \"slug\": \"category-updated\",\n  \"description\": \"Updated description\",\n  \"image_url\": \"https://example.test/category-updated.png\",\n  \"is_active\": true\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/categories/{{category_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "categories",
+                                                                               "{{category_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Category",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/categories/{{category_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "categories",
+                                                                               "{{category_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  }
+                              ]
+                 },
+                 {
+                     "name":  "Product",
+                     "item":  [
+                                  {
+                                      "name":  "List Products",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/products?limit=10\u0026search=\u0026sort_by=created_at\u0026sort_order=desc",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "products"
+                                                                           ],
+                                                                  "query":  [
+                                                                                {
+                                                                                    "key":  "limit",
+                                                                                    "value":  "10"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "search",
+                                                                                    "value":  ""
+                                                                                },
+                                                                                {
+                                                                                    "key":  "sort_by",
+                                                                                    "value":  "created_at"
+                                                                                },
+                                                                                {
+                                                                                    "key":  "sort_order",
+                                                                                    "value":  "desc"
+                                                                                }
+                                                                            ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Create Product",
+                                      "event":  [{
+
+                                                    "listen":  "test",
+                                                    "script":  {
+                                                                   "type":  "text/javascript",
+                                                                   "exec":  [
+                                                                                "const json = pm.response.json();",
+                                                                                "if (json \u0026\u0026 json.ok \u0026\u0026 json.data \u0026\u0026 json.data.id) {",
+                                                                                "    pm.collectionVariables.set(\u0027product_id\u0027, json.data.id);",
+                                                                                "}"
+                                                                            ]
+                                                               }
+                                                
+}],
+                                      "request":  {
+                                                      "method":  "POST",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"category_id\": \"{{category_id}}\",\n  \"brand_id\": \"{{brand_id}}\",\n  \"name\": \"Product Demo\",\n  \"slug\": \"product-demo\",\n  \"description\": \"Product description\",\n  \"price\": 150000,\n  \"stock\": 20,\n  \"sku\": \"SKU-0001\",\n  \"image_url\": \"https://example.test/product.png\",\n  \"is_active\": true\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/products",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "products"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Get Product Detail",
+                                      "request":  {
+                                                      "method":  "GET",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/products/{{product_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "products",
+                                                                               "{{product_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Update Product",
+                                      "request":  {
+                                                      "method":  "PUT",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Content-Type",
+                                                                         "value":  "application/json"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "body":  {
+                                                                   "mode":  "raw",
+                                                                   "raw":  "{\n  \"category_id\": \"{{category_id}}\",\n  \"brand_id\": \"{{brand_id}}\",\n  \"name\": \"Product Updated\",\n  \"slug\": \"product-updated\",\n  \"description\": \"Updated description\",\n  \"price\": 175000,\n  \"stock\": 25,\n  \"sku\": \"SKU-0002\",\n  \"image_url\": \"https://example.test/product-updated.png\",\n  \"is_active\": true\n}"
+                                                               },
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/products/{{product_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "products",
+                                                                               "{{product_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  },
+                                  {
+                                      "name":  "Delete Product",
+                                      "request":  {
+                                                      "method":  "DELETE",
+                                                      "header":  [
+                                                                     {
+                                                                         "key":  "Authorization",
+                                                                         "value":  "Bearer {{access_token}}"
+                                                                     },
+                                                                     {
+                                                                         "key":  "Accept",
+                                                                         "value":  "application/json"
+                                                                     }
+                                                                 ],
+                                                      "url":  {
+                                                                  "raw":  "{{base_url}}/api/v1/products/{{product_id}}",
+                                                                  "host":  [
+                                                                               "{{base_url}}"
+                                                                           ],
+                                                                  "path":  [
+                                                                               "api",
+                                                                               "v1",
+                                                                               "products",
+                                                                               "{{product_id}}"
+                                                                           ]
+                                                              }
+                                                  }
+                                  }
+                              ]
+                 }
+             ]
 }
+
+
